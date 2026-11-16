@@ -49,8 +49,8 @@ class Pet:
     def __init__(self, name, kind="cat"):
         self.name = name
         self.kind = kind
-        self.hunger = 30   # 0 - full, 100 - very hungry
-        self.mood = 60     # 0 - sad, 100 - happy
+        self.hunger = 30
+        self.mood = 60
 
     def eat(self):
         self.hunger = max(0, self.hunger - 30)
