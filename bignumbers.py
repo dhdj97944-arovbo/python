@@ -10,7 +10,7 @@ class Countdown:
             n -= 1
 
 
-countdown = Countdown(5891952) # впадлу було робити маленьке число , нехай працюе
+countdown = Countdown(5891952) # впадлу було робити маленьке число
 
 print("Type of object      :", type(countdown).__name__)
 print("Type of iter(object):", type(iter(countdown)).__name__)
