@@ -1,30 +1,56 @@
-import requests
+from timeit import repeat
 
-NBU_URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&json"
+import requests
+from bs4 import BeautifulSoup
+
+NBU_URL = "https://bank.gov.ua/ua/markets/exchangerates"
 
 
 class CurrencyConverter:
 
     def __init__(self):
         self.rate = None
-        self.date = None
+        self.date = "unknown"
         self.load_rate()
 
     def load_rate(self):
         response = requests.get(NBU_URL, timeout=10)
         response.raise_for_status()
-        data = response.json()[0]
-        self.rate = float(data["rate"])
-        self.date = data["exchangedate"]
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        for row in soup.find_all("tr"):
+            cells = [c.get_text(strip=True) for c in row.find_all(["td", "th"])]
+            if "USD" not in cells:
+                continue
+            for cell in cells:
+                if "." in cell or "," in cell:
+                    try:
+                        self.rate = float(cell.replace(",", "."))
+                        break
+                    except ValueError:
+                        continue
+            if self.rate:
+                break
+
+        if self.rate is None:
+            raise ValueError("USD rate not found on the page")
+
+        for word in soup.get_text().split():
+            if len(word) == 10 and word[2] == "." and word[5] == ".":
+                self.date = word
+                break
 
     def uah_to_usd(self, amount):
         return amount / self.rate
+
+    def usd_to_uah(self, amount):
+        return amount * self.rate
 
 
 def main():
     try:
         converter = CurrencyConverter()
-    except requests.RequestException as e:
+    except (requests.RequestException, ValueError) as e:
         print(f"Could not get the exchange rate: {e}")
         return
 
