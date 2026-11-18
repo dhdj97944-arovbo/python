@@ -4,8 +4,7 @@ import requests
 
 DB_NAME = "weather.db"
 
-WEATHER_URL = ("https://api.open-meteo.com/v1/forecast"
-               "?latitude=51.4982&longitude=31.2893&current=temperature_2m")
+WEATHER_URL = ("https://api.open-meteo.com/v1/forecast""?latitude=51.4982&longitude=31.2893&current=temperature_2m")
 
 
 def create_db():
