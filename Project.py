@@ -37,7 +37,7 @@ def menu(conn):
                 print(symbol, "- $" + str(price))
         elif choice == "2":
             symbol = input("Символ монети: ").upper()
-            row = conn.execute("SELECT price FROM coins WHERE symbol = ?", (symbol,)).fetchone()  # шукаю одну монету в базі
+            row = conn.execute("SELECT price FROM coins WHERE symbol = ?", (symbol,)).fetchone()
             if row:
                 print(symbol, "- $" + str(row[0]))
             else:
@@ -46,10 +46,10 @@ def menu(conn):
             break
 
 
-class Trader:  # клас нашого трейдера
+class Trader:
 
     def __init__(self, name, price):
-        self.name = name  # self - це сам трейдер
+        self.name = name 
         self.price = price
         self.money = 5000
         self.coins = 0
@@ -103,7 +103,7 @@ class Trader:  # клас нашого трейдера
         elif self.family <= 0:
             print("Дружина пішла")
             self.alive = False
-        elif self.age >= 90 or (self.age >= 70 and random.randint(1, 10) == 1):  # після 70 шанс 1 з 10
+        elif self.age >= 90 or (self.age >= 70 and random.randint(1, 10) == 1):  
             self.die_of_old_age()
 
     def end_of_year(self):
@@ -115,7 +115,7 @@ class Trader:  # клас нашого трейдера
     def live(self, year):
         print(f"\nРік {year} життя {self.name}, вік {self.age}")
         self.price *= random.uniform(0.7, 1.4)
-        live_cube = random.randint(1, 5)  # кубик - яку дію робити
+        live_cube = random.randint(1, 5)  
         if live_cube == 1:
             self.to_buy()
         elif live_cube == 2:
@@ -151,7 +151,7 @@ conn.execute("CREATE TABLE coins (symbol TEXT PRIMARY KEY, price REAL)")
 prices = get_prices()
 for symbol, price in prices.items():
     conn.execute("INSERT OR REPLACE INTO coins VALUES (?, ?)", (symbol, price))
-conn.commit()  # зберігаю зміни
+conn.commit()  
 
 menu(conn)
 
