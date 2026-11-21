@@ -162,6 +162,6 @@ for year in range(100):
         break
     trader.live(year)
 
-print("\nСимуляція закінчена")
+print("\nСимуляція закінчена!")
 menu(conn)
 conn.close()
